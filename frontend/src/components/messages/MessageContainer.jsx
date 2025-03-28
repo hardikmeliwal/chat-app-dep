@@ -19,7 +19,7 @@ const MessageContainer = () => {
   const startVideoCall = async () => {
     try {
       // Step 1: Get the Meet link
-      const meetResponse = await fetch("http://localhost:5000/api/create-meeting", {
+      const meetResponse = await fetch("https://chat-app-dep-aepc.onrender.com/api/create-meeting", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -27,7 +27,7 @@ const MessageContainer = () => {
       });
 
       if (meetResponse.status === 401) {
-        window.location.href = "http://localhost:5000/auth/google";
+        window.location.href = "https://chat-app-dep-aepc.onrender.com/auth/google";
         return;
       }
 
@@ -56,7 +56,7 @@ const MessageContainer = () => {
       if (!receiverId) throw new Error("Receiver ID not found");
       
       // Step 4: Send the link as a message using the existing route
-      const messageResponse = await fetch(`http://localhost:5000/api/messages/send/${receiverId}`, {
+      const messageResponse = await fetch(`https://chat-app-dep-aepc.onrender.com/api/messages/send/${receiverId}`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
