@@ -22,11 +22,11 @@ dotenv.config()
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-   "http://localhost:5000/auth/google/callback"
+   "https://chat-app-dep-aepc.onrender.com/auth/google/callback"
 );
 
 app.use(cors({
-    origin: "http://localhost:3000", 
+    origin: "https://chat-app-dep-aepc.onrender.com", 
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true // Allow cookies and authorization headers
   }));
@@ -50,11 +50,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/messages", messageRoutes)
 app.use("/api/users", userRoutes)
 
-app.use(express.static(path.join(__dirname,"/frontend/dist")));
 
-app.get("*",(req,res) => {
-  res.sendFile(path.join(__dirname,"frontend","dist","index.html"));
-})
 
 // app.get("/",(req,res) => {
 //     //root route http://localhost:5000/
@@ -80,7 +76,7 @@ app.get("/auth/google/callback", async (req, res) => {
     oauth2Client.setCredentials(tokens);
     req.session.tokens = tokens; // Store tokens in session
     console.log("Tokens stored:", tokens);
-    res.redirect("http://localhost:3000"); // Redirect to frontend after auth
+    res.redirect("https://chat-app-dep-aepc.onrender.com"); // Redirect to frontend after auth
   } catch (error) {
     console.error("Error in Google OAuth callback:", error);
     res.status(500).send("Authentication failed");
@@ -138,6 +134,11 @@ app.post("/api/create-meeting", async (req, res) => {
   }
 });
 
+app.use(express.static(path.join(__dirname,"/frontend/dist")));
+
+app.get("*",(req,res) => {
+  res.sendFile(path.join(__dirname,"frontend","dist","index.html"));
+})
 
 server.listen(PORT,() => {
     connectToMongoDB();
